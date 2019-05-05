@@ -28,7 +28,7 @@ const routes: Routes = [
 ];
 
 const config = {
-  apiKey: "AIzaSyAD2YwPTz9Lv3fZ7RO6xWE43439-vpiA3w",
+  apiKey: "",
   authDomain: "test-01-8638e.firebaseapp.com",
   databaseURL: "https://test-01-8638e.firebaseio.com",
   projectId: "test-01-8638e",
