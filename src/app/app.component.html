@@ -1,0 +1,23 @@
+<app-main-widget
+  *ngIf="currentPage === 'main-widget' "
+  (toggleWidgets)="changeWidget($event)"
+  
+></app-main-widget>
+
+<app-create-team
+  *ngIf="currentPage === 'create' "
+  (toggleWidgets)="changeWidget($event)"
+  (propsCreate)="reciveProps($event)"
+></app-create-team>
+
+<app-join-team
+  *ngIf="currentPage === 'join' "
+  (toggleWidgets)="changeWidget($event)"
+></app-join-team>
+<app-set-name 
+  *ngIf="currentPage === 'set-name' "
+  (toggleWidgets)="changeWidget($event)">
+</app-set-name>
+
+{{ createNumOfPlayers }}
+{{ createTableName }}

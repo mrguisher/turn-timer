@@ -1,0 +1,34 @@
+<div class="main-container">
+  <p>
+    TURN TIMER
+  </p>
+
+  <p>STWÓRZ STÓŁ</p>
+
+  <input [(ngModel)]="inputValue" type="text" placeholder="Wpisz nazwę stołu">
+
+  <br><br>
+<p>Podaj liczbę graczy</p>
+
+<mat-slider min="0" max="8" step="1" value="1" thumbLabel [(ngModel)]="numOfPlayers"></mat-slider>
+
+  <button 
+    class="btn"
+    (click)="createTeam()"
+  
+  >wyślij</button>
+
+  {{ inputValue }}
+  {{ numOfPlayers }}
+
+  <br><br>
+
+    
+
+    <svg-icon class="btn-svg" (click)="moveBack('main-widget')" src="assets/icons/baseline-arrow_back-24px.svg" [svgStyle]="{ 'width.px':30, 'height.px':30, 'fill':'rgb(255,255,255)' }">  </svg-icon>
+  
+
+
+</div>
+
+

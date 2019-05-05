@@ -1,0 +1,23 @@
+<div class="main-container">
+  <p>
+    TURN TIMER
+  </p>
+
+  <p>DOŁĄCZ DO STOŁU</p>
+
+  <input [(ngModel)]="inputValue" type="text" placeholder="Wpisz nazwę stołu">
+
+  <br><br>
+
+  <button 
+    class="btn"
+
+  
+  >wyślij</button>
+
+  {{ inputValue }}
+
+  <svg-icon class="btn-svg" (click)="moveBack('main-widget')" src="assets/icons/baseline-arrow_back-24px.svg" [svgStyle]="{ 'width.px':30, 'height.px':30, 'fill':'rgb(255,255,255)' }">  </svg-icon>
+  
+
+</div>
