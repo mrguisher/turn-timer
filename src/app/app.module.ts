@@ -11,8 +11,6 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AppComponent } from './app.component';
 import { MainWidgetComponent } from './main-widget/main-widget.component';
 import { CreateTeamComponent } from './create-team/create-team.component';
-import { JoinTeamComponent } from './join-team/join-team.component';
-import { SetNameComponent } from './set-name/set-name.component';
 import { AdminBoardComponent } from './admin-board/admin-board.component';
 import { PlayerBoardComponent } from './player-board/player-board.component';
 
@@ -28,7 +26,7 @@ const routes: Routes = [
 ];
 
 const config = {
-  apiKey: "",
+  apiKey: "AIzaSyAD2YwPTz9Lv3fZ7RO6xWE43439-vpiA3w",
   authDomain: "test-01-8638e.firebaseapp.com",
   databaseURL: "https://test-01-8638e.firebaseio.com",
   projectId: "test-01-8638e",
@@ -42,8 +40,6 @@ const config = {
     AppComponent,
     MainWidgetComponent,
     CreateTeamComponent,
-    JoinTeamComponent,
-    SetNameComponent,
     AdminBoardComponent,
     PlayerBoardComponent
   ],
