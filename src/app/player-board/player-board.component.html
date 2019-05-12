@@ -1,3 +1,23 @@
-<p>
-  player-board works!
-</p>
+<div class="main-container">
+
+
+<p>PLAYER WIDGET</p>
+
+<button (click)="test()"></button>
+
+
+<div *ngFor="let pl of players">
+
+        {{pl.playerName}}
+
+</div>
+
+<div *ngFor="let set of settings">
+
+     {{set.admin}}
+     {{set.tableName}}
+     {{set.numOfPlayers}}
+</div>
+
+<svg-icon class="btn-svg" (click)="changeWidget('main-widget')" src="assets/icons/baseline-arrow_back-24px.svg" [svgStyle]="{ 'width.px':30, 'height.px':30, 'fill':'rgb(255,255,255)' }">  </svg-icon>
+</div>
