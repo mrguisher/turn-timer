@@ -10,7 +10,7 @@ import { Settings } from './../settings'
 })
 export class PlayerBoardComponent implements OnInit {
 
-  @Input() playerName;
+
   @Input() tableName;
   
   players: Player[] = [];
@@ -24,14 +24,17 @@ export class PlayerBoardComponent implements OnInit {
   ngOnInit() {
     this.db.collection(`${this.tableName}`).doc('players').collection('players').valueChanges().subscribe((players: Player[]) => this.players = players);
     this.db.collection(`${this.tableName}`).valueChanges().subscribe((settings: Settings[]) => this.settings = settings);
+
+    
   }
 
   test() {
+
     console.log(
       this.players
     )
     console.log(
-      this.settings
+      this.tableName
     )
   }
 
