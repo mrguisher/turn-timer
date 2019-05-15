@@ -3,13 +3,14 @@
 
 <p>PLAYER WIDGET</p>
 
-<button (click)="test()"></button>
+<button (click)="test()">test</button>
 
 
 <div *ngFor="let pl of players">
 
         {{pl.playerName}}
-
+        {{pl.playerCurrentTime}}
+        {{pl.isActive}}
 </div>
 
 <div *ngFor="let set of settings">
