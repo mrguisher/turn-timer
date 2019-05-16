@@ -8,6 +8,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { MatSliderModule } from '@angular/material/slider';
+import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { AppComponent } from './app.component';
@@ -27,14 +28,7 @@ const routes: Routes = [
   }
 ];
 
-const config = {
-  apiKey: "AIzaSyAD2YwPTz9Lv3fZ7RO6xWE43439-vpiA3w",
-  authDomain: "test-01-8638e.firebaseapp.com",
-  databaseURL: "https://test-01-8638e.firebaseio.com",
-  projectId: "test-01-8638e",
-  storageBucket: "test-01-8638e.appspot.com",
-  messagingSenderId: "1006566896787"
-};
+
 
 
 @NgModule({
@@ -50,6 +44,7 @@ const config = {
     RouterModule.forRoot(routes),
     FormsModule,
     MatSliderModule,
+    MatInputModule,
     MatProgressSpinnerModule,
     HttpClientModule,
     AngularSvgIconModule,
