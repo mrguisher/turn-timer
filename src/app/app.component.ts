@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-root',
@@ -10,33 +10,24 @@ export class AppComponent implements OnInit {
   
   currentPage: string = 'main-widget';
 
-  createTableName: string;
-  createNumOfPlayers: number;
+  playerName: string;
+  tableName: string;
 
-
-  constructor(public db: AngularFirestore) {
-
-
-
-
+  constructor() {
+    sessionStorage.getItem('tableName') !== null && this.changeWidget('player');
   }
 
   ngOnInit() {
-
-  }
-
-  async fetchData() {
-
     
-
   }
 
-  changeWidget($event) {
+  changeWidget($event): void {
       this.currentPage = $event;
   }
+
   reciveProps($event) {
-    this.createNumOfPlayers = $event[0];
-    this.createTableName = $event[1];
+    this.playerName = $event.playerName;
+    this.tableName = $event.tableName;
   }
 
 }

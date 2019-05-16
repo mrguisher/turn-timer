@@ -1,23 +1,23 @@
 <app-main-widget
   *ngIf="currentPage === 'main-widget' "
   (toggleWidgets)="changeWidget($event)"
-  
 ></app-main-widget>
 
 <app-create-team
-  *ngIf="currentPage === 'create' "
+  *ngIf="currentPage === 'create' || currentPage === 'join' "
   (toggleWidgets)="changeWidget($event)"
-  (propsCreate)="reciveProps($event)"
+  (propsCreateTeam)="reciveProps($event)"
+  [currentPage]= "currentPage"
 ></app-create-team>
 
-<app-join-team
-  *ngIf="currentPage === 'join' "
-  (toggleWidgets)="changeWidget($event)"
-></app-join-team>
-<app-set-name 
-  *ngIf="currentPage === 'set-name' "
-  (toggleWidgets)="changeWidget($event)">
-</app-set-name>
 
-{{ createNumOfPlayers }}
-{{ createTableName }}
+<app-player-board
+  *ngIf="currentPage === 'player' "
+  (toggleWidgets)="changeWidget($event)"
+>
+</app-player-board>
+
+
+
+<div *ngIf="currentPage === 'error-table-name' ">table name is occupied</div>
+<div *ngIf="currentPage === 'error-player-name' ">player name is occupied</div>
