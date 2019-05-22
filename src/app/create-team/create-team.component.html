@@ -1,7 +1,7 @@
 <ng-container *ngIf="spinnerStatus === 'off' ">
 <div
 *ngIf="currentPage === 'join' || currentPage === 'create' "
-class="main-container">
+class="main-container create-team">
   <p>
     TURN TIMER
   </p>
@@ -11,22 +11,43 @@ class="main-container">
   <p *ngIf="currentPage === 'join' ">JOIN</p>
 
   <input [(ngModel)]="tableName" type="text" placeholder="Wpisz nazwę stołu">
-  <br><br>
-  <input [(ngModel)]="playerName" type="text" placeholder="Podaj swój nick">
-  <br><br>
 
-<div *ngIf="currentPage === 'create' ">
-  <p>Podaj liczbę graczy</p>
-  <mat-slider min="0" max="8" step="1" value="1" thumbLabel [(ngModel)]="numOfPlayers"></mat-slider>
-</div>
+  <input [(ngModel)]="playerName" type="text" placeholder="Podaj swój nick">
+
+
+  <ng-container *ngIf="currentPage === 'create' ">
+    <div>
+      <p>Podaj liczbę graczy</p>
+      <mat-slider min="1" max="8" step="1" value="2" thumbLabel [(ngModel)]="numOfPlayers"></mat-slider>
+    </div>
+
+    <div>
+
+      <mat-form-field class="mat-form-field-container">
+        <mat-select [(ngModel)]="timePerRound" placeholder="wybierz" class="mat-select-container">
+          <mat-option *ngFor="let min of minutes" [value]="min">
+            {{min}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+  </ng-container>
+
 
 <button class="btn"(click)="createTeam()">
   wyślij
 </button>
-  <br><br>
+
+czas
+{{timePerRound}}
+
+
   <svg-icon class="btn-svg" (click)="changeWidget('main-widget')" src="assets/icons/baseline-arrow_back-24px.svg" [svgStyle]="{ 'width.px':30, 'height.px':30, 'fill':'rgb(255,255,255)' }">  </svg-icon>
 </div>
 </ng-container>
+
+
 
 <!-- spinner -->
 <div *ngIf="spinnerStatus === 'on' " class="spinner-container">
