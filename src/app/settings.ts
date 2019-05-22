@@ -3,4 +3,6 @@ export interface Settings {
      numOfPlayers: number;
      tableName: string;
      timePerRound: string;
+     activePlayer: string;
+     nextPlayer: string;
 }

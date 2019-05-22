@@ -1,6 +1,7 @@
 export interface Player {
-     isActive: boolean;
      playerCurrentTime: number;
      playerName: string;
+     isAdmin: boolean;
      order: number;
+     playerOverallTime: string;
 }
