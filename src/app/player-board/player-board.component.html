@@ -1,24 +1,89 @@
 <div class="main-container">
+     <button (click)="test()">tesssst</button>
+     <br>
+     <button (click)="order()"> order players</button>
+     <br>
+     <button (click)="startGame()"> let the games begin !!</button>
+
+          <!-- navigation -->
+     <ng-container *ngFor="let set of settings">
+          <nav>
+               <p class="table-name">Table name: {{set.tableName}}
+                    <span class="number-of-players">[{{set.numOfPlayers}}] players</span>
+               </p>
+               <svg-icon class="btn-svg" (click)="leaveTable()" src="assets/icons/baseline-clear-24px.svg" 
+                    [svgStyle]="{ 'width.px':30, 'height.px':30, 'fill':'rgb(0,0,0)' }">  
+               </svg-icon>
+          </nav>
+     </ng-container>
 
 
-<p>PLAYER WIDGET</p>
+     <div class="middle-container">
+          <ng-container *ngFor="let pl of players" >
+               <ng-container *ngIf="pl.playerName === playerName && pl.isActive === true ">
+       
+                    <div class="middle-container__label">
+                         Czas do końca rundy: 
+                    </div>
+                    <div class="middle-container__time">
+                         {{playerCurrentTime}}
+                    </div>
+                    <button class="middle-container__stop-button" (click)="clearCountdown()">
+                         ZAKOŃCZ RUCH
+                    </button>
+               </ng-container>
+          </ng-container>
+     </div>
 
-<button (click)="test()">test</button>
+     <!-- admin board -->
+     <ng-container *ngIf="isAdmin === 'true' ">
+          <div class="playboard">
+               <ng-container *ngFor="let pl of players">
+                    <div class="player-container">
+                         <!-- {{pl.order}} -->
+                         <p class="player-name">{{pl.playerName}}</p>
+                         <ng-container *ngFor="let set of settings">
+                              <div [ngClass]="{'player-inactive': set.activePlayer !== pl.playerName, 'player-active': set.activePlayer === pl.playerName}" 
+                              class="player">
 
+                              <svg-icon src="assets/icons/baseline-person-24px.svg"
+                              [svgStyle]="{ 'width.px':30, 'height.px':30 }"
+                              class="player-svg">
+                              </svg-icon>
+                              </div>
+                         </ng-container>
+                         <p class="player-name" *ngIf="pl.isAdmin === true">[admin]</p>
+                    </div>
+               </ng-container>
+          </div>
+     </ng-container>
 
-<div *ngFor="let pl of players">
+     <div class="lower-container">
+          <div class="lower-container__player">
+                    Active player:
+               <div class="lower-container__player-name">
+                    <ng-container *ngFor="let set of settings">
+                         {{set.activePlayer}}
+                    </ng-container>
+               </div>
+          </div>
+          <div class="lower-container__player">
+                         Next player:
+               <div class="lower-container__player-name">
+                    <ng-container *ngFor="let set of settings">
+                         {{set.nextPlayer}}
+                    </ng-container>
+               </div>
+          </div>
+     </div>
 
-        {{pl.playerName}}
-        {{pl.playerCurrentTime}}
-        {{pl.isActive}}
-</div>
-
-<div *ngFor="let set of settings">
-
-     {{set.admin}}
-     {{set.tableName}}
-     {{set.numOfPlayers}}
-</div>
-
-<svg-icon class="btn-svg" (click)="changeWidget('main-widget')" src="assets/icons/baseline-arrow_back-24px.svg" [svgStyle]="{ 'width.px':30, 'height.px':30, 'fill':'rgb(255,255,255)' }">  </svg-icon>
+     <!-- footer -->
+     <ng-container *ngFor="let set of settings">
+          <div 
+               class="footer" 
+               [ngClass]="{'footer-active': set.activePlayer === playerName}" >
+               Player name: {{playerName}} 
+               <span *ngIf="set.activePlayer === playerName">ACTIVE]</span>
+          </div>
+     </ng-container>
 </div>
