@@ -13,19 +13,24 @@ export class CreateTeamComponent implements OnInit {
   playerName: string;
   tableName: string;
 
-  // validate
-  ifTableExists: boolean;
-  ifPlayerExists: boolean;
-  ifNoRoom: boolean;
-
-  isActive: boolean = false;
-  playerCurrentTime: string = '00:57:58';
-  numOfPlayers: number = 1;
-  currentNumOfPlayers: number = 1;
+  numOfPlayers: number = 2;
   spinnerStatus: string = 'off';
 
   players: Player[] = [];
   settings: Settings[] = [];
+
+  playerCurrentTime: string = '00:00:00';
+  timePerRound: string;
+  minutes: any = [
+    '0:05','0:10','0:20','0:30','0:40','1:00',
+    '1:20','1:40','2:00','3:00','4:00',
+    '5:00','6:00','8:00','10:00',
+  ]
+
+  // validation
+  ifTableExists: boolean;
+  ifPlayerExists: boolean;
+  ifNoRoom: boolean;
 
   @Input() currentPage;
 
@@ -47,90 +52,73 @@ export class CreateTeamComponent implements OnInit {
   async createTeam() {
    
       // check if the collection exists
-      
     await this.db.collection(`${this.tableName}`).valueChanges().subscribe((settings: Settings[]) => this.settings = settings);  
     await  this.db.collection(`${this.tableName}`).doc('players').collection('players').valueChanges().subscribe((players: Player[]) => this.players = players);
 
     this.spinnerStatus = 'on';
 
-    console.log(this.players);
-    console.log(this.currentPage);
-
     setTimeout(() => {
       this.setData()
-    }, 800 ) 
+    }, 2200 ) 
   }
 
-
-
   async setData() {
-  
-    
 
-    // ifTableExists
+      // ifTableExists
     this.settings.length === 0 ? this.ifTableExists = false : this.ifTableExists = true;
     
-    
     if (this.ifTableExists === true) {
-       // ifPlayerExists
-    const nameIteration = this.players.map((obj) => obj.playerName).find((el) => el === this.playerName);
-    nameIteration === undefined ? this.ifPlayerExists = false : this.ifPlayerExists = true;
-    // ifNoRoom
-
-    this.settings[0].numOfPlayers === this.players.length ? this.ifNoRoom = true : this.ifNoRoom = false;
-
-    console.warn(this.settings[0].numOfPlayers);
-    console.warn(this.players.length)
+        // ifPlayerExists
+      const nameIteration = this.players.map((obj) => obj.playerName).find((el) => el === this.playerName);
+      nameIteration === undefined ? this.ifPlayerExists = false : this.ifPlayerExists = true;
+        // ifNoRoom
+      this.settings[0].numOfPlayers === this.players.length ? this.ifNoRoom = true : this.ifNoRoom = false;
     }
     
-   
-    
-   
-
-    // if create
+    // if 'create'
 
     if (this.currentPage === 'create') {
       if (this.ifTableExists) {
         alert('Table name is occupied');
-        this.changeWidget('error-table-name');
+        // this.changeWidget('error-table-name');
       }
       else {
-        //  add settings
+        // add settings
         await this.db.collection(`${this.tableName}`).doc('settings').set({
           admin: `${this.playerName}`,
-          numOfPlayers: this.numOfPlayers, 
+          numOfPlayers: this.numOfPlayers,
           tableName: `${this.tableName}`,
-          currentNumOfPlayers: 1,
+          timePerRound: `${this.timePerRound}`,
+          activePlayer: '',
+          nextPlayer: '',
         });
   
         // add player
         await this.db.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
-          isActive: `${this.isActive}`,
+          isActive: false,
           playerName: `${this.playerName}`,
           playerCurrentTime: `${this.playerCurrentTime}`,
-          
+          playerOverallTime: '00:00:00',
+          isAdmin: true,
+          order: 0,
         });
-  
-        // send props
-        await this.propsCreateTeam.emit({
-          playerName: this.playerName,
-          tableName: this.tableName,
-          });
-  
+
+        // send data to session storage
+        sessionStorage['tableName'] = this.tableName;
+        sessionStorage['playerName'] = this.playerName;
+        sessionStorage['isAdmin'] = true;
+
         // change widget
         this.changeWidget('player');
-        
       }
     }
 
-
-    // if join
+    // if 'join'
 
      if (this.currentPage === 'join') {
 
       if (this.ifTableExists === false) {
         alert("There's no such a table");
-        
       } else {
 
         if (this.ifNoRoom === true) {
@@ -139,31 +127,27 @@ export class CreateTeamComponent implements OnInit {
 
           if (this.ifPlayerExists === true) {
             alert("table exists, but player name is occupied")
-          }
-          else if (this.ifPlayerExists === false) {
+          } else if (this.ifPlayerExists === false) {
+
+            // add player
             await this.db.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
-              isActive: `${this.isActive}`,
+              isActive: false,
               playerName: `${this.playerName}`,
               playerCurrentTime: `${this.playerCurrentTime}`,
-              
+              isAdmin: false,
+              order: 0,
             });
 
-             // send props
-            await this.propsCreateTeam.emit({
-              playerName: this.playerName,
-              tableName: this.tableName,
-              });
+            // send data to session storage
+            sessionStorage['tableName'] = this.tableName;
+            sessionStorage['playerName'] = this.playerName;
+            sessionStorage['isAdmin'] = false;
 
             this.changeWidget('player');
           }
         }
-
       }
-
     }
-
-
     this.spinnerStatus = 'off';
-
   }
 }
