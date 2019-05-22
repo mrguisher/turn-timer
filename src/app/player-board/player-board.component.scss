@@ -1,0 +1,142 @@
+nav {
+     width: 100vw;
+     height: 10vh;
+     background-color: rgb(179, 182, 182);
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     justify-content: space-around;
+     // margin-bottom: 5rem;
+}
+
+
+.middle-container {
+     position: absolute;
+     top: 60%;
+     transform: translateY(-50%);
+     width: 50vw;
+     height: 30vh;
+     font-weight: 100;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     
+     &__label {
+          margin-bottom: 1rem;
+     }
+     &__time {
+          font-size: 3rem;
+          margin-bottom: 2rem;
+     }
+     &__stop-button {
+          border-radius: 5px;
+          background-color: rgb(240, 8, 27);
+          color: white;
+          font-size: 1.5rem;
+          padding: 1rem;
+     }
+     &__overall {
+
+          &__label {
+               
+          }
+     }
+}
+
+// PLAYER BOARD
+
+.lower-container {
+
+     position: absolute;
+     bottom: 10vh;
+     height: 10vh;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     width: 100vw;
+     align-items: center;
+     padding: 0 2rem;
+     font-weight: 100;
+
+     &__player {
+          line-height: 2rem;
+     }
+
+     
+     &__player-name {
+          text-align: center;
+          font-weight: 400;
+     }
+}
+
+// ADMIN BOARD
+
+.player {
+
+     position: relative;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     border: 2px solid black;
+     border-radius: 10%;
+     
+     &-container {
+          margin: 1rem;
+          width: 4rem;
+     }
+     &-name {
+          margin: .5rem auto;
+          font-size: 1rem;
+          font-weight: 700;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: center;
+     }
+
+     &-active {
+          background-color: rgb(12, 202, 12);
+     } 
+     &-inactive {
+          background-color: rgb(189, 186, 186);
+     }
+     &-svg {
+          justify-content: center;
+     }
+}
+
+.number-of-players {
+     font-size: 1rem;
+     font-weight: 700;
+     margin-left: 1rem;
+}
+.table-name{
+     font-size: 1.5rem;
+     font-weight: 200;
+}
+
+.playboard {
+     position: relative;
+     display: flex;
+     flex-direction: column;
+     flex-wrap: wrap;
+     height: 40vw;
+     width: 100vw;
+     justify-content: flex-start;
+     align-content: space-between;
+     // margin-bottom: 5rem;
+}
+.footer {
+     width: 100vw;
+     background-color: rgb(190, 188, 188);
+     height: 10vh;
+     position: absolute;
+     bottom: 0;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     &-active {
+          background-color: rgb(10, 179, 10);
+     }
+}
