@@ -91,11 +91,12 @@ export class CreateTeamComponent implements OnInit {
           timePerRound: `${this.timePerRound}`,
           activePlayer: '',
           nextPlayer: '',
+          popup: true,
+          popupText: 'Czkam na rozpoczęcie gry',
         });
   
         // add player
         await this.db.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
-          isActive: false,
           playerName: `${this.playerName}`,
           playerCurrentTime: `${this.playerCurrentTime}`,
           playerOverallTime: '00:00:00',
@@ -131,7 +132,6 @@ export class CreateTeamComponent implements OnInit {
 
             // add player
             await this.db.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
-              isActive: false,
               playerName: `${this.playerName}`,
               playerCurrentTime: `${this.playerCurrentTime}`,
               isAdmin: false,

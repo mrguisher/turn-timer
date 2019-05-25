@@ -11,9 +11,7 @@ class="main-container create-team">
   <p *ngIf="currentPage === 'join' ">JOIN</p>
 
   <input [(ngModel)]="tableName" type="text" placeholder="Wpisz nazwę stołu">
-
   <input [(ngModel)]="playerName" type="text" placeholder="Podaj swój nick">
-
 
   <ng-container *ngIf="currentPage === 'create' ">
     <div>
@@ -39,14 +37,9 @@ class="main-container create-team">
   wyślij
 </button>
 
-czas
-{{timePerRound}}
-
-
   <svg-icon class="btn-svg" (click)="changeWidget('main-widget')" src="assets/icons/baseline-arrow_back-24px.svg" [svgStyle]="{ 'width.px':30, 'height.px':30, 'fill':'rgb(255,255,255)' }">  </svg-icon>
 </div>
 </ng-container>
-
 
 
 <!-- spinner -->
