@@ -1,5 +1,6 @@
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import './variables.scss';
 
 @font-face {
      font-family: 'Nunito';
@@ -11,12 +12,15 @@
      margin: 0;
      box-sizing: border-box;
      font-family: 'Nunito', sans-serif;
+     font-size: 16px;
 }
 .btn {
      background-color: inherit;
-     border: 2px solid rgb(10, 47, 68);
-     padding: 10px 25px;
-     color: rgb(10, 47, 68);
+     border: 2px solid $color-black;
+     padding: .8rem 1.5rem;
+     color: $color-black;
+     border-radius: .3rem;
+     font-size: 1rem;
 }
 .btn-svg {
      width: 10vw;
@@ -28,20 +32,19 @@
 }
 
 .main-container {
-     background-color: rgb(241, 241, 241);
+     background-color: $color-white;
      position: relative;
      width: 100vw;
      height: 100vh;
      display: flex;
      flex-direction: column;
-     // justify-content: center;
      align-items: center;
 }
 .spinner-container {
      position: absolute;
      width: 100vw;
      height: 100vh;
-     background-color: rgb(216, 215, 215);
+     background-color: $color-white;
      z-index: 10;
      display: flex;
      align-items: center;
@@ -49,11 +52,26 @@
      top: 0;
      left: 0;
 }
-
 p {
-     color: rgb(9, 27, 37);
+     color: $color-black;
 }
 h1 {
+     font-size: 3rem;
+     position: absolute;
+     top: 8rem;
+     font-weight: 300;
+}
+h2 {
      font-size: 2rem;
      font-weight: 100;
+}
+.logo {
+     width: 20rem;
+     margin-bottom: 4rem;
+}
+.text-bold {
+     font-weight: 700;
+}
+.text-medium {
+     font-weight: 300;
 }
