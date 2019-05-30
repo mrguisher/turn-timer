@@ -2,6 +2,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Player } from './../player';
 import { Settings } from './../settings'
+import { Pipe, PipeTransform } from '@angular/core';
 import { CountdownComponent } from '../countdown/countdown.component';
 
 @Component({
@@ -21,44 +22,39 @@ export class PlayerBoardComponent implements OnInit {
   orderedPlayers: any;
   countdownStart: any;
 
-  gameStatus: string = 'waiting';
+  tableReference: any = this.db.collection('TURN_TIMER').doc('TURN_TIMER').collection(`${this.tableName}`);
 
   constructor(public db: AngularFirestore) {
 
   }
 
   ngOnInit() {
-    this.db.collection(`${this.tableName}`).doc('players').collection('players').valueChanges().subscribe((players: Player[]) => this.players = players);
-    this.db.collection(`${this.tableName}`).valueChanges().subscribe((settings: Settings[]) => this.settings = settings);
+    this.tableReference.doc('players').collection('players').valueChanges().subscribe((players: Player[]) => this.players = players);
+    this.tableReference.valueChanges().subscribe((settings: Settings[]) => this.settings = settings);
   }
 
   @Output() toggleWidgets = new EventEmitter<string>();
   @Input() countdownProps;
+
 
   changeWidget(widget) {
     this.toggleWidgets.emit(widget);
   }
 
   // order players
-
   order(playerID) {
-
-    if (this.settings[0].numOfPlayers !== 1) {
-
       const message = prompt("Wpisz numer:");
       const num = parseFloat(message);
       const ifValid = [1,2,3,4,5,6,7,8].find((el) => el === num);
       const ifAvailable = [...this.players].find((el) => el.order === num);
   
       if (ifValid && ifAvailable === undefined) {
-        this.db.collection(`${this.tableName}`).doc('players').collection('players').doc(playerID).update({
+        this.tableReference.doc('players').collection('players').doc(playerID).update({
           order: num,
         });
-        
       } else {
         alert('Wprowadź inną wartość')
       }
-    }
   }
 
   sorting() {
@@ -66,9 +62,7 @@ export class PlayerBoardComponent implements OnInit {
   }
 
   // start game
-
   nextPlayerOrder(num: number) {
-
       if (num === this.orderedPlayers.length - 1) {
         return this.orderedPlayers[0]
       } else {
@@ -78,28 +72,12 @@ export class PlayerBoardComponent implements OnInit {
 
   startGame(random: boolean) {
     this.sorting();
-    // this.orderedPlayers.map(() => )
-
-    if (random === true && this.settings[0].numOfPlayers !== 1) {
-      const rand = Math.floor(Math.random() * this.orderedPlayers.length);
-      console.log(this.orderedPlayers[rand] ,this.nextPlayerOrder(rand), this.orderedPlayers.length, rand)
-      
-      this.db.collection(`${this.tableName}`).doc('settings').update({
-        activePlayer: `${this.orderedPlayers[rand]}`,
-        nextPlayer: `${this.nextPlayerOrder(rand)}`,
-        popup: false,
-        
-      });
-    } else {
-
-      this.db.collection(`${this.tableName}`).doc('settings').update({
-        activePlayer: `${this.orderedPlayers[0]}`,
-        nextPlayer: `${this.orderedPlayers[1]}`,
-        popup: false,
-      });
-    }
-
-    this.gameStatus = 'started';
+    const rand = Math.floor(Math.random() * this.orderedPlayers.length);
+    this.tableReference.doc('settings').update({
+      activePlayer: `${random === true ? this.orderedPlayers[rand] : this.orderedPlayers[0]}`,
+      nextPlayer: `${random === true ? this.nextPlayerOrder(rand) : this.orderedPlayers[1]}`,
+      gameStatus: 'started'
+    });
   }
 
   // shift players
@@ -110,29 +88,26 @@ export class PlayerBoardComponent implements OnInit {
       this.sorting();
       const nextPlayerIndex = this.orderedPlayers.indexOf(this.settings[0].nextPlayer);
 
-      this.db.collection(`${this.tableName}`).doc('settings').update({
+      this.tableReference.doc('settings').update({
         activePlayer: `${this.settings[0].nextPlayer}`,
         nextPlayer: `${this.nextPlayerOrder(nextPlayerIndex)}`,
       });
     }
   }
 
-  endGame() {
-    this.db.collection(`${this.tableName}`).doc('settings').update({
-      activePlayer: null,
-      nextPlayer: null,
-      popup: true,
-      popupText: 'Koniec gry',
-    });
-    this.gameStatus = 'waiting'
+  tezt() {
+
+
   }
 
   leaveTable() {
     if (confirm("Do you really want to leave??")) {
+      this.tableReference.doc('players').collection('players').doc(`${this.playerName}`).delete();
+      if (this.isAdmin) {
+        this.tableReference.doc('settings').delete();
+        [...this.players].map((pl) => this.tableReference.doc('players').collection('players').doc(pl.playerName).delete())
 
-      this.db.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).delete();
-      // this.isAdmin ? this.db.collection(`${this.tableName}`)
-
+      }
       sessionStorage.removeItem('tableName');
       sessionStorage.removeItem('playerName');
       sessionStorage.removeItem('isAdmin');
