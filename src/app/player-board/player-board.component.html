@@ -1,7 +1,6 @@
 <div class="main-container">
-          
           <ng-container *ngFor="let set of settings">
-               <ng-container *ngIf="set.popup === true && set.admin !== playerName">
+               <ng-container *ngIf="set.gameStatus === 'ready' && set.admin !== playerName">
                          <div class="popup">
                     <div class="popup__container">
                          <div class="popup__text">
@@ -15,69 +14,65 @@
                </ng-container>
           </ng-container>
          
-
           <!-- navigation -->
      <ng-container *ngFor="let set of settings">
-          <nav>
-               <p class="table-name">Table name: {{set.tableName}}
-                    <span class="number-of-players">[{{set.numOfPlayers}}] players</span>
-               </p>
-               <svg-icon class="btn-svg" (click)="leaveTable()" src="assets/icons/baseline-clear-24px.svg" 
-                    [svgStyle]="{ 'width.px':30, 'height.px':30, 'fill':'rgb(0,0,0)' }">  
-               </svg-icon>
+          <nav class="navigation">
+               <img src="./../../assets/icons/logo_transparent.png" alt="logo" class="navigation__logo">
+               <div class="navigation__table-info">
+                    <p class="navigation__table-name text-medium">Table name: 
+                         <span class="navigation__table-name text-bold">{{set.tableName}}</span>
+                    </p>
+                    <span class="navigation__number-of-players">max {{set.numOfPlayers}} players</span>
+               </div>
+               <div class="navigation__close">
+                    <svg-icon class="btn-svg" (click)="leaveTable()" src="assets/icons/baseline-clear-24px.svg" 
+                    [svgStyle]="{ 'width.px':40, 'height.px':40, 'fill':'rgb(0,0,0)' }"></svg-icon>
+               </div>
           </nav>
      </ng-container>
-     
-          
-  
 
      <!-- admin board -->
      <ng-container *ngIf="isAdmin === 'true' ">
           <div class="playboard">
                <ng-container *ngFor="let pl of players">
-                    <div class="player-container"
-                         (click)="order(pl.playerName)">
-                         
-                         <p class="player-name"
-                              >{{pl.playerName}}</p>
+                    <div class="player-container" (click)="order(pl.playerName)">
+                         <p class="player-name">{{pl.playerName}}</p>
                          <ng-container *ngFor="let set of settings">
                               <div [ngClass]="{'player-inactive': set.activePlayer !== pl.playerName, 'player-active': set.activePlayer === pl.playerName}" 
-                              class="player"
-                              >
-
-                              <svg-icon src="assets/icons/baseline-person-24px.svg"
-                              [svgStyle]="{ 'width.px':30, 'height.px':30 }"
-                              class="player-svg">
-                              </svg-icon>
+                              class="player">
+                                   <svg-icon src="assets/icons/baseline-person-24px.svg"
+                                   [svgStyle]="{ 'width.px':30, 'height.px':30, 'fill':'rgb(250,250,250)' }"
+                                   class="player-svg">
+                                   </svg-icon>
                               </div>
                          </ng-container>
-                         <p class="player-name">
-                              No. [{{pl.order}}]
-                         </p>
-                         <p class="player-name" *ngIf="pl.isAdmin === true">[admin]</p>
+                         <p class="player-name player-name__order">- {{pl.order}} - </p>
+                         <p class="player-name player-name__admin" *ngIf="pl.isAdmin === true">[admin]</p>
                     </div>
                </ng-container>
           </div>
-               <ng-container *ngIf="gameStatus === 'waiting'">
-                    <button (click)="startGame()" class="btn">START GAME</button>
-                    <button (click)="startGame(true)" class="btn">START GAME <br> pick random starting player</button>
-               </ng-container>
-               
-               <button (click)="endGame()" *ngIf="gameStatus === 'started'" class="btn">END GAME</button>
-
-               <ngb-alert [type]="info" (close)="close(alert)">[ADMIN] klikaj na graczy aby ustalić kolejność</ngb-alert>
-
-         
+          <ng-container *ngFor="let set of settings">
+               <div class="admin-settings">
+                    <ng-container *ngIf="set.gameStatus === 'ready'" >
+                         <button (click)="startGame()" class="btn admin-settings__btn">START GAME</button>
+                         <button (click)="startGame(true)" class="btn admin-settings__btn admin-settings__btn--sub">START GAME <br> <span class="admin-settings__btn-text-secondary">pick random starting player</span> </button>
+                    </ng-container>
+               </div>
+               <button (click)="tezt()" *ngIf="set.gameStatus === 'started'" class="btn admin-settings__btn btn-end">END GAME</button>
+          </ng-container>
      </ng-container>
 
-     <ng-container *ngFor="let set of settings" >
-          <ng-container *ngIf="set.activePlayer === playerName">
+     <ng-container *ngFor="let set of settings">
+          <ng-container class="waiting" *ngIf="set.activePlayer === playerName && set.gameStatus === 'started'">
               <app-countdown (countdownProps)="shiftPlayers($event)"></app-countdown>
           </ng-container>
-          <div class="waiting" *ngIf="set.activePlayer !== playerName">
-               Czekaj na swój ruch
+          <div class="waiting" *ngIf="set.activePlayer !== playerName && set.gameStatus === 'started'">
+               <p class="waiting__text">Czekaj na swój ruch</p> 
+               <img src="./../../assets/icons/baseline-hourglass_empty-24px.svg" alt="hourglass" class="waiting__icon">
           </div>
      </ng-container>
+
+     <!-- <ngb-alert [type]="info" (close)="close(alert)">[ADMIN] klikaj na graczy aby ustalić kolejność</ngb-alert> -->
 
      <div class="lower-container">
           <div class="lower-container__player">
@@ -97,15 +92,18 @@
                </div>
           </div>
      </div>
-     
 
      <!-- footer -->
      <ng-container *ngFor="let set of settings">
-          <div 
-               class="footer" 
-               [ngClass]="{'footer-active': set.activePlayer === playerName}" >
-               Player name: {{playerName}} 
-               <span *ngIf="set.activePlayer === playerName">ACTIVE]</span>
+          <div class="footer" [ngClass]="{'footer-active': set.activePlayer === playerName}">
+               Player name: <span class="text-bold footer__info"> {{playerName}}</span> 
+               <ng-container *ngIf="set.activePlayer === playerName" class="footer__info"> - ACTIVE - </ng-container>
+               <button (click)="tezt()">test</button>
           </div>
+          <!-- <ng-container *ngIf="set.activePlayer === '' ">
+               Back to menu {{set.activePlayer}}
+               <svg-icon class="btn-svg" (click)="leaveTable()" src="assets/icons/arrow-back-24px.svg" 
+               [svgStyle]="{ 'width.px':40, 'height.px':40, 'fill':'rgb(0,0,0)' }"></svg-icon>
+          </ng-container> -->
      </ng-container>
 </div>
