@@ -1,5 +1,5 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Component, Output, Input, EventEmitter } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Player } from './../player';
 import { Settings } from './../settings'
 
@@ -8,7 +8,7 @@ import { Settings } from './../settings'
   templateUrl: './create-team.component.html',
   styleUrls: ['./create-team.component.scss']
 })
-export class CreateTeamComponent implements OnInit {
+export class CreateTeamComponent {
 
   playerName: string;
   tableName: string;
@@ -32,14 +32,12 @@ export class CreateTeamComponent implements OnInit {
   ifPlayerExists: boolean;
   ifNoRoom: boolean;
 
+  tableReference: any = this.db.collection('TURN_TIMER').doc('TURN_TIMER');
+
   @Input() currentPage;
 
   constructor(public db: AngularFirestore) { 
 
-  }
-
-  ngOnInit() {
-   
   }
 
   @Output() toggleWidgets = new EventEmitter<string>();
@@ -52,8 +50,8 @@ export class CreateTeamComponent implements OnInit {
   async createTeam() {
    
       // check if the collection exists
-    await this.db.collection(`${this.tableName}`).valueChanges().subscribe((settings: Settings[]) => this.settings = settings);  
-    await  this.db.collection(`${this.tableName}`).doc('players').collection('players').valueChanges().subscribe((players: Player[]) => this.players = players);
+    await this.tableReference.collection(`${this.tableName}`).valueChanges().subscribe((settings: Settings[]) => this.settings = settings);  
+    await  this.tableReference.collection(`${this.tableName}`).doc('players').collection('players').valueChanges().subscribe((players: Player[]) => this.players = players);
 
     this.spinnerStatus = 'on';
 
@@ -84,19 +82,19 @@ export class CreateTeamComponent implements OnInit {
       }
       else {
         // add settings
-        await this.db.collection(`${this.tableName}`).doc('settings').set({
+        await this.tableReference.collection(`${this.tableName}`).doc('settings').set({
           admin: `${this.playerName}`,
           numOfPlayers: this.numOfPlayers,
           tableName: `${this.tableName}`,
           timePerRound: `${this.timePerRound}`,
           activePlayer: '',
           nextPlayer: '',
-          popup: true,
           popupText: 'Czkam na rozpoczęcie gry',
+          gameStatus: 'ready'
         });
   
         // add player
-        await this.db.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
+        await this.tableReference.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
           playerName: `${this.playerName}`,
           playerCurrentTime: `${this.playerCurrentTime}`,
           playerOverallTime: '00:00:00',
@@ -131,7 +129,7 @@ export class CreateTeamComponent implements OnInit {
           } else if (this.ifPlayerExists === false) {
 
             // add player
-            await this.db.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
+            await this.tableReference.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
               playerName: `${this.playerName}`,
               playerCurrentTime: `${this.playerCurrentTime}`,
               isAdmin: false,
