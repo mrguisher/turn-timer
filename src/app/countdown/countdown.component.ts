@@ -9,14 +9,18 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 export class CountdownComponent implements OnInit {
 
   countdownStart: any;
-  playerCurrentTime: number = 20;
+  playerCurrentTime: string = '00:02:30';
 
   constructor() { }
 
   ngOnInit() {
-    this.countdownStart = setInterval(() => {
-      this.playerCurrentTime !== 0 ? this.playerCurrentTime = this.playerCurrentTime - 1 : this.clearCountdown();
-    }, 1000);
+    // this.countdownStart = setInterval(() => {
+    //   if (this.playerCurrentTime !== '00:00:00') {
+
+
+
+    //   }
+    // }, 1000);
   }
 
   @Output() countdownProps = new EventEmitter<any>();
@@ -25,13 +29,21 @@ export class CountdownComponent implements OnInit {
 
 
   clearCountdown() {
-    clearInterval(this.countdownStart);
-
     this.countdownProps.emit({
       time: this.playerCurrentTime,
       outOfTime: true,
     })
-
+    clearInterval(this.countdownStart);
   }
 
+  formatTime(time: string, n: number) {
+   const timeSplit = this.playerCurrentTime.split(':');
+   const hours = parseFloat(timeSplit[0]);
+   const minutes = timeSplit[1];
+   const seconds = timeSplit[2];
+
+
+   console.log(hours)
+  }
 }
+// this.playerCurrentTime = this.playerCurrentTime - 1 : this.clearCountdown();
