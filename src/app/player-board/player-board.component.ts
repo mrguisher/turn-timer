@@ -1,8 +1,7 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Component, OnInit, Output, Input, EventEmitter, HostListener } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Player } from './../player';
-import { Settings } from './../settings'
-import { Pipe, PipeTransform } from '@angular/core';
+import { Settings } from './../settings';
 import { CountdownComponent } from '../countdown/countdown.component';
 
 @Component({
@@ -21,25 +20,20 @@ export class PlayerBoardComponent implements OnInit {
 
   orderedPlayers: any;
   countdownStart: any;
+  timePerRound: string;
 
   tableReference: any = this.db.collection('TURN_TIMER').doc('TURN_TIMER').collection(`${this.tableName}`);
 
-  constructor(public db: AngularFirestore) {
+  constructor(public db: AngularFirestore) { }
 
-  }
-
-  ngOnInit() {
-    this.tableReference.doc('players').collection('players').valueChanges().subscribe((players: Player[]) => this.players = players);
-    this.tableReference.valueChanges().subscribe((settings: Settings[]) => this.settings = settings);
+  async ngOnInit() {
+    await this.tableReference.doc('players').collection('players').valueChanges().subscribe((players: Player[]) => this.players = players);
+    await this.tableReference.valueChanges().subscribe((settings: Settings[]) => this.settings = settings);
+    this.passTime();
   }
 
   @Output() toggleWidgets = new EventEmitter<string>();
   @Input() countdownProps;
-
-
-  changeWidget(widget) {
-    this.toggleWidgets.emit(widget);
-  }
 
   // order players
   order(playerID) {
@@ -61,7 +55,6 @@ export class PlayerBoardComponent implements OnInit {
     this.orderedPlayers = [...this.players].sort((a,b) => a.order - b.order).map((el) => el.playerName);
   }
 
-  // start game
   nextPlayerOrder(num: number) {
       if (num === this.orderedPlayers.length - 1) {
         return this.orderedPlayers[0]
@@ -80,39 +73,59 @@ export class PlayerBoardComponent implements OnInit {
     });
   }
 
-  // shift players
   shiftPlayers($event) {
-
     if ($event.outOfTime === true) {
-
       this.sorting();
       const nextPlayerIndex = this.orderedPlayers.indexOf(this.settings[0].nextPlayer);
-
       this.tableReference.doc('settings').update({
         activePlayer: `${this.settings[0].nextPlayer}`,
         nextPlayer: `${this.nextPlayerOrder(nextPlayerIndex)}`,
+        isTimePassed: false,
       });
     }
   }
 
-  tezt() {
-
-
-  }
-
-  leaveTable() {
+  async leaveTable() {
     if (confirm("Do you really want to leave??")) {
-      this.tableReference.doc('players').collection('players').doc(`${this.playerName}`).delete();
-      if (this.isAdmin) {
-        this.tableReference.doc('settings').delete();
-        [...this.players].map((pl) => this.tableReference.doc('players').collection('players').doc(pl.playerName).delete())
-
+      if (this.isAdmin === 'true') {
+        await this.tableReference.doc('settings').update({
+          isDestroyed: true
+        });
+        await this.tableReference.doc('settings').delete();
+        await [...this.players].map((pl) => this.tableReference.doc('players').collection('players').doc(pl.playerName).delete())
       }
-      sessionStorage.removeItem('tableName');
-      sessionStorage.removeItem('playerName');
-      sessionStorage.removeItem('isAdmin');
+      await sessionStorage.removeItem('tableName'); sessionStorage.removeItem('playerName'); sessionStorage.removeItem('isAdmin');
 
-      this.changeWidget('main-widget')
+      await this.changeWidget('main-widget');
+      await this.tableReference.doc('players').collection('players').doc(`${this.playerName}`).delete();
     }
   }
+
+  // 
+  deleteWidget() {
+    this.changeWidget('main-widget');
+    sessionStorage.removeItem('tableName');
+    sessionStorage.removeItem('playerName');
+    sessionStorage.removeItem('isAdmin');
+  }
+
+  passTime() {
+    const interval = setInterval(() => {
+        this.settings[0].tableName === this.tableName ? (this.timePerRound = this.settings[0].timePerRound, clearInterval(interval)) : null;
+      }, 100)
+  }
+
+  // prevent from unloading
+  @HostListener('window:beforeunload', ['$event'])
+  unload($event) {
+    if(this.settings[0].activePlayer === this.playerName) {
+      $event.returnValue;
+      console.log($event)
+    }
+  }
+
+  changeWidget(widget) {
+    this.toggleWidgets.emit(widget);
+  }
+
 }

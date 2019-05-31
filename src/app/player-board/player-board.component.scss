@@ -10,6 +10,15 @@
      justify-content: space-between;
      padding: 0 1rem;
      box-shadow: 0 1px 15px -5px;
+
+     @include respond(tab-port) {
+          width: 60vw;
+          height: 10vh;
+     }
+     @include respond(tab-land) {
+          width: 40vw;
+          height: 10vh;
+     }
      &__logo {
           display: flex;
           align-items: center;
@@ -28,9 +37,18 @@
           font-size: .8rem;
      }
      &__table-name {
-          font-size: 1.4rem;
+          font-size: 1.2rem;
+          width: 40vw;
+          display: inline-block;
+          text-align: center;
+          margin-bottom: .5rem;
+          @include respond(tab-port) {
+               width: 20vw;
+          }
+          @include respond(tab-land) {
+               width: 10vw;
+          }
      }
-
      &__close {
           width: 7rem;
           display: flex;
@@ -84,12 +102,23 @@
      padding: 0 1rem;
      font-weight: 100;
 
+     @include respond(tab-port) {
+          width: 60vw;
+          height: 8vh;
+     }
+     @include respond(tab-land) {
+          width: 40vw;
+          height: 8vh;
+     }
+
      &__player {
           line-height: 2rem;
+          text-align: center;
      }
      &__player-name {
           text-align: center;
           font-weight: 400;
+          max-width: 20vw;
      }
 }
 
@@ -113,17 +142,14 @@
      align-items: center;
      border: 2px solid $color-black;
      border-radius: 5px;
-     &-container {
+     &__container {
           margin: 0 1.2rem;
           width: 3.5rem;
      }
-     &-name {
+     &__name {
           margin: .5rem auto;
           font-size: 1rem;
           font-weight: 300;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
           text-align: center;
           &__order {
                font-weight: 400;
@@ -133,13 +159,14 @@
                font-size: .6rem;
           }
      }
-     &-active {
+  
+     &__active {
           background-color: $color-green;
      } 
-     &-inactive {
+     &__inactive {
           background-color: $color-silver;
      }
-     &-svg {
+     &__svg {
           justify-content: center;
      }
 }
@@ -169,6 +196,8 @@
      flex-direction: column;
      justify-content: space-around;
      align-items: center;
+
+     
     
      &__btn-text-secondary {
           font-size: .6rem;
@@ -201,10 +230,25 @@
      display: flex;
      justify-content: center;
      align-items: center;
+
+     @include respond(tab-port) {
+          width: 60vw;
+          height: 8vh;
+     }
+     @include respond(tab-land) {
+          width: 40vw;
+          height: 8vh;
+     }
      &-active {
           background-color: $color-green;
      }
      &__info {
           margin-left: 1rem;
+          max-width: 30vw;
      }
+}
+.shorten-name {
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
 }
