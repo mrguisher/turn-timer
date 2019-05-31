@@ -1,23 +1,68 @@
-nav {
+@import './../../variables.scss';
+
+.navigation {
      width: 100vw;
-     height: 10vh;
-     background-color: rgb(179, 182, 182);
+     height: 14vh;
      display: flex;
+     background-color: rgba($color-silver, .2);
      flex-direction: row;
      align-items: center;
-     justify-content: space-around;
-     // margin-bottom: 5rem;
+     justify-content: space-between;
+     padding: 0 1rem;
+     box-shadow: 0 1px 15px -5px;
+
+     @include respond(tab-port) {
+          width: 60vw;
+          height: 10vh;
+     }
+     @include respond(tab-land) {
+          width: 40vw;
+          height: 10vh;
+     }
+     &__logo {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          width: 10rem;
+     }
+     &__table-info {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          align-items: center;
+          width: 100%;
+     }
+     &__number-of-players {
+          font-size: .8rem;
+     }
+     &__table-name {
+          font-size: 1.2rem;
+          width: 40vw;
+          display: inline-block;
+          text-align: center;
+          margin-bottom: .5rem;
+          @include respond(tab-port) {
+               width: 20vw;
+          }
+          @include respond(tab-land) {
+               width: 10vw;
+          }
+     }
+     &__close {
+          width: 7rem;
+          display: flex;
+          justify-content: center;
+     }
 }
 
 // PLAYER BOARD
-
 .popup {
      position: fixed;
      width: 100vw;
      height: 100vh;
-     background-color: rgba(15, 39, 59, 0.822);
+     background-color: rgba($color-silver, 0.822);
      z-index: 10;
-
      &__container {
           position: absolute;
           width: 50vw;
@@ -30,9 +75,13 @@ nav {
           justify-content: center;
           align-items: center;
           box-shadow: 1px 2px 10px 1px;
-          background-color: white;
-          
+          background-color: $color-white;
           padding: 1rem;
+
+          @include respond(tab-port) {
+               width: 20vw;
+             
+          }
      }
      &__text {
           font-size: 1.5rem;
@@ -47,7 +96,6 @@ nav {
 }
 
 .lower-container {
-
      position: absolute;
      bottom: 10vh;
      height: 10vh;
@@ -56,89 +104,150 @@ nav {
      justify-content: space-between;
      width: 100vw;
      align-items: center;
-     padding: 0 2rem;
+     padding: 0 1rem;
      font-weight: 100;
 
+     @include respond(tab-port) {
+          width: 60vw;
+          height: 8vh;
+     }
+     @include respond(tab-land) {
+          width: 40vw;
+          height: 8vh;
+     }
      &__player {
           line-height: 2rem;
+          text-align: center;
      }
-
-     
      &__player-name {
           text-align: center;
           font-weight: 400;
+          max-width: 20vw;
      }
 }
 
 // ADMIN BOARD
+.playboard {
+     position: relative;
+     display: flex;
+     flex-direction: row;
+     flex-wrap: wrap;
+     max-height: 40vh;
+     justify-content: center;
+     align-content: space-between;
+}
 
 .player {
-
      position: relative;
      display: flex;
      flex-direction: column;
      justify-content: center;
      align-items: center;
-     border: 2px solid black;
-     border-radius: 10%;
-     
-     &-container {
-          margin: 1rem;
-          width: 4rem;
+     border: 2px solid $color-black;
+     border-radius: 5px;
+     &__container {
+          margin: 0 1.2rem;
+          width: 3.5rem;
      }
-     &-name {
+     &__name {
           margin: .5rem auto;
           font-size: 1rem;
-          font-weight: 700;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          font-weight: 300;
           text-align: center;
+          &__order {
+               font-weight: 400;
+               font-size: .8rem;
+          }
+          &__admin {
+               font-size: .6rem;
+          }
      }
-
-     &-active {
-          background-color: rgb(12, 202, 12);
+     &__active {
+          background-color: $color-green;
      } 
-     &-inactive {
-          background-color: rgb(189, 186, 186);
+     &__inactive {
+          background-color: $color-silver;
      }
-     &-svg {
+     &__svg {
           justify-content: center;
      }
 }
-
-.number-of-players {
-     font-size: 1rem;
-     font-weight: 700;
-     margin-left: 1rem;
-}
-.table-name{
-     font-size: 1.5rem;
-     font-weight: 200;
-}
-
-.playboard {
-     position: relative;
+.waiting {
      display: flex;
      flex-direction: column;
-     flex-wrap: wrap;
-     max-height: 40vw;
-     width: 80vw;
-     justify-content: flex-start;
-     align-content: space-around;
+     align-items: center;
+     position: absolute;
+     top: 50%;
+     &__text {
+          font-size: 2rem;
+          font-weight: 200;
+     }
+     &__icon {
+          margin-top: 2rem;
+          display: block;
+          text-align: center;
+          width: 3rem;
+     }
+}
+.admin-settings {
+     position: absolute;
+     bottom: 25vh;
+     height: 20vh;
+     display: flex;
+     flex-direction: column;
+     justify-content: space-around;
+     align-items: center;
+
+     &__btn-text-secondary {
+          font-size: .6rem;
+     }
+     &__btn {
+          padding: .5rem 1rem;
+          font-size: .7rem;
+          background-color: $color-secondary;
+          color: $color-black;
+          &--sub {
+               background-color: transparent;
+               border-color: $color-secondary-dark;
+               color: $color-secondary-dark;
+          }
+     }
+}
+.btn-end {
+     position: absolute;
+     bottom: 15vh;
+     z-index: 10;
 }
 
 // footer
 .footer {
      width: 100vw;
-     background-color: rgb(190, 188, 188);
+     background-color: $color-silver;
      height: 10vh;
      position: absolute;
      bottom: 0;
      display: flex;
      justify-content: center;
      align-items: center;
-     &-active {
-          background-color: rgb(10, 179, 10);
+
+     @include respond(tab-port) {
+          width: 60vw;
+          height: 8vh;
      }
+     @include respond(tab-land) {
+          width: 40vw;
+          height: 8vh;
+     }
+     &-active {
+          background-color: $color-green;
+     }
+     &__info {
+          margin-left: 1rem;
+          max-width: 30vw;
+     }
+}
+.shorten-name {
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
 }

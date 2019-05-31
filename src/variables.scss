@@ -1,0 +1,23 @@
+$color-white: rgb(248, 248, 248);
+$color-silver: #BFC0C0;
+$color-red: #e74c3c;
+$color-green: #0ed45a;
+$color-black: rgb(0, 0, 0);
+
+$color-primary: #3498db;
+$color-primary-light: #aec2ee;
+$color-primary-dark: #2980b9;
+$color-secondary: #7181de;
+$color-secondary-dark: #223394;
+
+@mixin respond($breakpoint) {
+     @if  $breakpoint == phone-large {
+         @media only screen and (min-width: 600px) {@content};  //600px
+     }
+     @if  $breakpoint == tab-port {
+         @media only screen and (min-width: 900px) {@content}; //900px
+     }
+     @if  $breakpoint == tab-land {
+         @media only screen and (min-width: 1200px) {@content};   //1200px
+     }
+ }

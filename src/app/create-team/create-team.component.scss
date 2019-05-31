@@ -1,8 +1,52 @@
+@import './../../variables.scss';
+
 mat-slider {
      width: 60vw;
    }
 
 .create-team {
-  justify-content: space-between;
+  justify-content: center;
+  font-size: 1.2rem;
+ 
+  &__label {
+    margin-bottom: 2rem;
+  }
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+  }
+  &__input {
+    border: none;
+    border-bottom: 1px solid black;
+    padding: .5rem .5rem;
+    background-color: transparent;
+    outline: none;
+    width: 40vw;
+    font-size: 1.2rem;
+    font-weight: 300;
+  }
+  &__input:first-of-type {
+    margin-bottom: 2rem;
+  }
+  &__input:focus {
+    border-bottom: 1px solid;
+    border-color: rgb(21, 24, 199);
+  }
+  &__slider {
+    margin-top: 2rem;
+  } 
+  &__slider-text {
+    text-align: center;
+  }
+  &__btn {
+    margin-top: 2rem;
+  }
+  &__arrow {
+    position: absolute;
+    left: 3rem;
+    bottom: 2rem;
+  }
+ 
 }
-

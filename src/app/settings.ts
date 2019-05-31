@@ -5,6 +5,7 @@ export interface Settings {
      timePerRound: string;
      activePlayer: string;
      nextPlayer: string;
-     popup: boolean;
      popupText: string;
+     gameStatus: string;
+     isDestroyed: boolean;
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Component, Output, Input, EventEmitter } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Player } from './../player';
 import { Settings } from './../settings'
 
@@ -8,12 +8,13 @@ import { Settings } from './../settings'
   templateUrl: './create-team.component.html',
   styleUrls: ['./create-team.component.scss']
 })
-export class CreateTeamComponent implements OnInit {
+export class CreateTeamComponent {
 
   playerName: string;
   tableName: string;
 
-  numOfPlayers: number = 2;
+  playersArray: any = [2, 3, 4, 5, 6, 7, 8];
+  numOfPlayers: number;
   spinnerStatus: string = 'off';
 
   players: Player[] = [];
@@ -32,15 +33,11 @@ export class CreateTeamComponent implements OnInit {
   ifPlayerExists: boolean;
   ifNoRoom: boolean;
 
+  tableReference: any = this.db.collection('TURN_TIMER').doc('TURN_TIMER');
+
   @Input() currentPage;
 
-  constructor(public db: AngularFirestore) { 
-
-  }
-
-  ngOnInit() {
-   
-  }
+  constructor(public db: AngularFirestore) { }
 
   @Output() toggleWidgets = new EventEmitter<string>();
   @Output() propsCreateTeam = new EventEmitter(); 
@@ -50,21 +47,21 @@ export class CreateTeamComponent implements OnInit {
   }
 
   async createTeam() {
-   
-      // check if the collection exists
-    await this.db.collection(`${this.tableName}`).valueChanges().subscribe((settings: Settings[]) => this.settings = settings);  
-    await  this.db.collection(`${this.tableName}`).doc('players').collection('players').valueChanges().subscribe((players: Player[]) => this.players = players);
-
-    this.spinnerStatus = 'on';
+    this.spinnerStatus = 'on'
+    await this.tableReference.collection(`${this.tableName}`).valueChanges().subscribe((settings: Settings[]) => this.settings = settings);  
+    await  this.tableReference.collection(`${this.tableName}`).doc('players').collection('players').valueChanges().subscribe((players: Player[]) => this.players = players);
 
     setTimeout(() => {
-      this.setData()
-    }, 2200 ) 
+      if(this.currentPage === 'create') { (this.tableName === undefined || this.tableName.trim() === '' ) || (this.playerName === undefined || this.playerName.trim() === '' ) || this.numOfPlayers === undefined || this.timePerRound === undefined ? (alert('Wprowadź poprawne wartości'), this.spinnerStatus = 'off') : this.setData(); }
+      else {
+        (this.tableName === undefined || this.tableName.trim() === '' ) || (this.playerName === undefined || this.playerName.trim() === '' ) ? (alert('Wprowadź poprawne wartości'), this.spinnerStatus = 'off') : this.setData();
+      }
+    }, 2000)
   }
 
   async setData() {
 
-      // ifTableExists
+    // ifTableExists
     this.settings.length === 0 ? this.ifTableExists = false : this.ifTableExists = true;
     
     if (this.ifTableExists === true) {
@@ -74,32 +71,30 @@ export class CreateTeamComponent implements OnInit {
         // ifNoRoom
       this.settings[0].numOfPlayers === this.players.length ? this.ifNoRoom = true : this.ifNoRoom = false;
     }
-    
-    // if 'create'
 
+    // if 'create'
     if (this.currentPage === 'create') {
+ 
       if (this.ifTableExists) {
-        alert('Table name is occupied');
-        // this.changeWidget('error-table-name');
+        alert('Nazwa stołu jest zajęta');
       }
       else {
         // add settings
-        await this.db.collection(`${this.tableName}`).doc('settings').set({
+        await this.tableReference.collection(`${this.tableName}`).doc('settings').set({
           admin: `${this.playerName}`,
           numOfPlayers: this.numOfPlayers,
           tableName: `${this.tableName}`,
           timePerRound: `${this.timePerRound}`,
           activePlayer: '',
           nextPlayer: '',
-          popup: true,
           popupText: 'Czkam na rozpoczęcie gry',
+          gameStatus: 'ready',
+          isDestroyed: false,
         });
   
         // add player
-        await this.db.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
+        await this.tableReference.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
           playerName: `${this.playerName}`,
-          playerCurrentTime: `${this.playerCurrentTime}`,
-          playerOverallTime: '00:00:00',
           isAdmin: true,
           order: 0,
         });
@@ -119,21 +114,20 @@ export class CreateTeamComponent implements OnInit {
      if (this.currentPage === 'join') {
 
       if (this.ifTableExists === false) {
-        alert("There's no such a table");
+        alert("Nie ma takiego stołu");
       } else {
 
         if (this.ifNoRoom === true) {
-          alert('no room for any player')
+          alert('Brak miejsca')
         } else {
 
           if (this.ifPlayerExists === true) {
-            alert("table exists, but player name is occupied")
+            alert("Stół istnieje, ale nick jest zajęty")
           } else if (this.ifPlayerExists === false) {
 
             // add player
-            await this.db.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
+            await this.tableReference.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
               playerName: `${this.playerName}`,
-              playerCurrentTime: `${this.playerCurrentTime}`,
               isAdmin: false,
               order: 0,
             });

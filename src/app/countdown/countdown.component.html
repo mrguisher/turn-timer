@@ -2,10 +2,17 @@
   <div class="middle-container__label">
       Czas do końca rundy: 
   </div>
-  <div class="middle-container__time">
-      {{playerCurrentTime}}
+  <div class="middle-container__time" >
+    <ng-container *ngIf="currentMinutes !== undefined">
+        {{currentMinutes | timeFormat}} : {{currentSeconds | timeFormat}}
+    </ng-container>  
+    <ng-container *ngIf="currentMinutes === undefined">
+        wait
+    </ng-container>
+   
   </div>
   <button class="middle-container__stop-button" (click)="clearCountdown()">
       ZAKOŃCZ RUCH
   </button>
+  
 </div>
