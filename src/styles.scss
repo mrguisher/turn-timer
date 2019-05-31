@@ -14,6 +14,15 @@
      font-family: 'Nunito', sans-serif;
      font-size: 16px;
 }
+body  {
+     height: 100vh;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     padding: 0;
+}
+
 .btn {
      background-color: inherit;
      border: 2px solid $color-black;
@@ -21,6 +30,9 @@
      color: $color-black;
      border-radius: .3rem;
      font-size: 1rem;
+     @include respond(tab-port) {
+          padding: 1rem 1.7rem;
+     }
 }
 .btn-svg {
      width: 10vw;
@@ -39,6 +51,20 @@
      display: flex;
      flex-direction: column;
      align-items: center;
+
+
+     @include respond(tab-port) {
+          width: 60vw;
+          height: 100vh;
+          box-shadow: 1px 3px 10px 0;
+     }
+     @include respond(tab-land) {
+          width: 40vw;
+          height: 90vh;
+          box-shadow: 1px 3px 10px 0;
+     }
+
+     
 }
 .spinner-container {
      position: absolute;
@@ -51,6 +77,8 @@
      justify-content: center;
      top: 0;
      left: 0;
+
+   
 }
 p {
      color: $color-black;

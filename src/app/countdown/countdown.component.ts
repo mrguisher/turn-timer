@@ -1,5 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Settings } from './../settings';
 
 @Component({
   selector: 'app-countdown',
@@ -9,41 +9,35 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 export class CountdownComponent implements OnInit {
 
   countdownStart: any;
-  playerCurrentTime: string = '00:02:30';
+  settings: Settings[] = [];
+  currentMinutes: number;
+  currentSeconds: number;
+
+  @Output() countdownProps = new EventEmitter<any>();
+  @Input() timePerRound: string;
 
   constructor() { }
 
   ngOnInit() {
-    // this.countdownStart = setInterval(() => {
-    //   if (this.playerCurrentTime !== '00:00:00') {
-
-
-
-    //   }
-    // }, 1000);
+    // countdown
+    setTimeout(() => {
+      const timeSplit = this.timePerRound.split(':');
+      let minutes: number = parseFloat(timeSplit[0]);
+      let seconds: number = parseFloat(timeSplit[1]);
+  
+      this.countdownStart = setInterval(() => {
+        seconds !== 0 ? seconds-- : minutes !== 0 ? (seconds = 59, minutes--) : this.clearCountdown();
+        this.currentMinutes = minutes;
+        this.currentSeconds = seconds;
+      }, 1000);
+    }, 500)
+ 
   }
-
-  @Output() countdownProps = new EventEmitter<any>();
-
-  // countdown
-
-
   clearCountdown() {
     this.countdownProps.emit({
-      time: this.playerCurrentTime,
+      time: this.timePerRound,
       outOfTime: true,
     })
     clearInterval(this.countdownStart);
   }
-
-  formatTime(time: string, n: number) {
-   const timeSplit = this.playerCurrentTime.split(':');
-   const hours = parseFloat(timeSplit[0]);
-   const minutes = timeSplit[1];
-   const seconds = timeSplit[2];
-
-
-   console.log(hours)
-  }
 }
-// this.playerCurrentTime = this.playerCurrentTime - 1 : this.clearCountdown();
