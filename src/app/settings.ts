@@ -7,4 +7,5 @@ export interface Settings {
      nextPlayer: string;
      popupText: string;
      gameStatus: string;
+     isDestroyed: boolean;
 }
