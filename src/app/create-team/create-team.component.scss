@@ -5,12 +5,11 @@ mat-slider {
    }
 
 .create-team {
-  justify-content: space-evenly;
+  justify-content: center;
   font-size: 1.2rem;
  
-
   &__label {
-  
+    margin-bottom: 2rem;
   }
   &__inputs {
     display: flex;

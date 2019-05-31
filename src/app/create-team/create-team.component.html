@@ -1,7 +1,7 @@
 <ng-container *ngIf="spinnerStatus === 'off' ">
 <div
-*ngIf="currentPage === 'join' || currentPage === 'create' "
-class="main-container create-team">
+  *ngIf="currentPage === 'join' || currentPage === 'create' "
+  class="main-container create-team">
 
   <h2 class="create-team__label" *ngIf="currentPage === 'create' ">CREATE</h2>
   <h2 class="create-team__label" *ngIf="currentPage === 'join' ">JOIN</h2>
@@ -16,26 +16,28 @@ class="main-container create-team">
   </div>
 
   <ng-container *ngIf="currentPage === 'create' ">
-    <div class="create-team__inputs create-team__slider">
-      <p class="create-team__slider-text">Podaj liczbę graczy</p>
-      <mat-slider min="1" max="8" step="1" value="2" thumbLabel [(ngModel)]="numOfPlayers"></mat-slider>
+    <div class="create-team__slider">
+      <mat-form-field class="mat-form-field-container">
+        <mat-select [(ngModel)]="numOfPlayers" placeholder="podaj liczbę graczy" class="mat-select-container">
+          <mat-option *ngFor="let player of playersArray" [value]="player">
+            {{player}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
     <div class="create-team__time">
-
       <mat-form-field class="mat-form-field-container">
-        <mat-select [(ngModel)]="timePerRound" placeholder="wybierz" class="mat-select-container">
+        <mat-select [(ngModel)]="timePerRound" placeholder="czas rundy" class="mat-select-container">
           <mat-option *ngFor="let min of minutes" [value]="min">
             {{min}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-
     </div>
   </ng-container>
 
-
-  <button class="btn create-team__btn"(click)="createTeam()">
+  <button class="btn create-team__btn" (click)="createTeam()">
     WYŚLIJ
   </button>
 
@@ -43,10 +45,7 @@ class="main-container create-team">
 </div>
 </ng-container>
 
-
 <!-- spinner -->
 <div *ngIf="spinnerStatus === 'on' " class="spinner-container">
   <mat-spinner color="accent"></mat-spinner>
 </div>
-
-
