@@ -6,13 +6,18 @@
      font-family: 'Nunito';
      src: url('https://fonts.googleapis.com/css?family=Nunito:200,300,400,700&display=swap&subset=latin-ext')
 }
-
 * {
      padding: 0;
      margin: 0;
      box-sizing: border-box;
      font-family: 'Nunito', sans-serif;
-     font-size: 16px;
+     font-size: 15px;
+     @include respond(phone-small) {
+          font-size: 14px;
+     }
+     @include respond(phone-large) {
+          font-size: 16px;
+     }
 }
 body  {
      height: 100vh;
@@ -22,7 +27,6 @@ body  {
      justify-content: center;
      padding: 0;
 }
-
 .btn {
      background-color: inherit;
      border: 2px solid $color-black;
@@ -42,7 +46,6 @@ body  {
      justify-content: center;
      align-items: center;
 }
-
 .main-container {
      background-color: $color-white;
      position: relative;
@@ -51,8 +54,6 @@ body  {
      display: flex;
      flex-direction: column;
      align-items: center;
-
-
      @include respond(tab-port) {
           width: 60vw;
           height: 100vh;
@@ -62,9 +63,7 @@ body  {
           width: 40vw;
           height: 90vh;
           box-shadow: 1px 3px 10px 0;
-     }
-
-     
+     } 
 }
 .spinner-container {
      position: absolute;
@@ -77,8 +76,6 @@ body  {
      justify-content: center;
      top: 0;
      left: 0;
-
-   
 }
 p {
      color: $color-black;

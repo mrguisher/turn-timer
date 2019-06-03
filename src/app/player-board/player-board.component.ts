@@ -37,7 +37,7 @@ export class PlayerBoardComponent implements OnInit {
 
   // order players
   order(playerID) {
-      const message = prompt("Wpisz numer:");
+      const message = prompt(`Wpisz numer gracza w kolejności (1-${this.settings[0].numOfPlayers}):`);
       const num = parseFloat(message);
       const ifValid = [1,2,3,4,5,6,7,8].find((el) => el === num);
       const ifAvailable = [...this.players].find((el) => el.order === num);
@@ -65,12 +65,24 @@ export class PlayerBoardComponent implements OnInit {
 
   startGame(random: boolean) {
     this.sorting();
-    const rand = Math.floor(Math.random() * this.orderedPlayers.length);
-    this.tableReference.doc('settings').update({
-      activePlayer: `${random === true ? this.orderedPlayers[rand] : this.orderedPlayers[0]}`,
-      nextPlayer: `${random === true ? this.nextPlayerOrder(rand) : this.orderedPlayers[1]}`,
-      gameStatus: 'started'
-    });
+
+    const isOrderSet = this.players.map((e, i, arr) => arr.filter((a) => a.order === e.order )).find((el) => el.length !== 1);
+    if (this.orderedPlayers.length === 1) {
+      alert("Nie możesz jeszcze zacząć gry. Poczekaj na wszystkich graczy.")
+    } else {
+      if (isOrderSet !== undefined) {
+        alert("Kolejność graczy nie jest ustalona. Kliknij na ikonę gracza.")
+      } else {
+        if (this.orderedPlayers.length === this.settings[0].numOfPlayers || confirm("Nie ma wszystkich graczy przy stole. Na pewno chcesz zacząć grę?")) {
+          const rand = Math.floor(Math.random() * this.orderedPlayers.length);
+          this.tableReference.doc('settings').update({
+            activePlayer: `${random === true ? this.orderedPlayers[rand] : this.orderedPlayers[0]}`,
+            nextPlayer: `${random === true ? this.nextPlayerOrder(rand) : this.orderedPlayers[1]}`,
+            gameStatus: 'started'
+          });
+        }
+      }
+    }
   }
 
   shiftPlayers($event) {
@@ -86,22 +98,20 @@ export class PlayerBoardComponent implements OnInit {
   }
 
   async leaveTable() {
-    if (confirm("Do you really want to leave??")) {
+    if (confirm("Na pewno chcesz opuścić stół?")) {
       if (this.isAdmin === 'true') {
         await this.tableReference.doc('settings').update({
           isDestroyed: true
         });
         await this.tableReference.doc('settings').delete();
-        await [...this.players].map((pl) => this.tableReference.doc('players').collection('players').doc(pl.playerName).delete())
+        await this.players.map((pl) => this.tableReference.doc('players').collection('players').doc(pl.playerName).delete())
       }
       await sessionStorage.removeItem('tableName'); sessionStorage.removeItem('playerName'); sessionStorage.removeItem('isAdmin');
-
       await this.changeWidget('main-widget');
       await this.tableReference.doc('players').collection('players').doc(`${this.playerName}`).delete();
     }
   }
 
-  // 
   deleteWidget() {
     this.changeWidget('main-widget');
     sessionStorage.removeItem('tableName');
@@ -120,12 +130,10 @@ export class PlayerBoardComponent implements OnInit {
   unload($event) {
     if(this.settings[0].activePlayer === this.playerName) {
       $event.returnValue;
-      console.log($event)
     }
   }
 
   changeWidget(widget) {
     this.toggleWidgets.emit(widget);
   }
-
 }

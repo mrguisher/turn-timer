@@ -7,12 +7,10 @@
         {{currentMinutes | timeFormat}} : {{currentSeconds | timeFormat}}
     </ng-container>  
     <ng-container *ngIf="currentMinutes === undefined">
-        wait
+        czekaj
     </ng-container>
-   
   </div>
   <button class="middle-container__stop-button" (click)="clearCountdown()">
       ZAKOŃCZ RUCH
   </button>
-  
 </div>

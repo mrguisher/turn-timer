@@ -87,7 +87,7 @@ export class CreateTeamComponent {
           timePerRound: `${this.timePerRound}`,
           activePlayer: '',
           nextPlayer: '',
-          popupText: 'Czkam na rozpoczęcie gry',
+          popupText: 'Czekam na rozpoczęcie gry',
           gameStatus: 'ready',
           isDestroyed: false,
         });
@@ -110,34 +110,33 @@ export class CreateTeamComponent {
     }
 
     // if 'join'
-
-     if (this.currentPage === 'join') {
-
+    if (this.currentPage === 'join') {
       if (this.ifTableExists === false) {
         alert("Nie ma takiego stołu");
       } else {
-
         if (this.ifNoRoom === true) {
           alert('Brak miejsca')
         } else {
-
           if (this.ifPlayerExists === true) {
             alert("Stół istnieje, ale nick jest zajęty")
           } else if (this.ifPlayerExists === false) {
+            if (this.settings[0].gameStatus !== 'started') {
+                // add player
+              await this.tableReference.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
+                playerName: `${this.playerName}`,
+                isAdmin: false,
+                order: 0,
+              });
 
-            // add player
-            await this.tableReference.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
-              playerName: `${this.playerName}`,
-              isAdmin: false,
-              order: 0,
-            });
+              // send data to session storage
+              sessionStorage['tableName'] = this.tableName;
+              sessionStorage['playerName'] = this.playerName;
+              sessionStorage['isAdmin'] = false;
 
-            // send data to session storage
-            sessionStorage['tableName'] = this.tableName;
-            sessionStorage['playerName'] = this.playerName;
-            sessionStorage['isAdmin'] = false;
-
-            this.changeWidget('player');
+              this.changeWidget('player');
+            } else {
+              alert("Nie możesz już dołączyć do tego stołu, runda trwa.")
+            }
           }
         }
       }
