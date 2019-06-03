@@ -96,7 +96,7 @@ export class CreateTeamComponent {
         await this.tableReference.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
           playerName: `${this.playerName}`,
           isAdmin: true,
-          order: 0,
+          order: 1,
         });
 
         // send data to session storage
@@ -125,7 +125,7 @@ export class CreateTeamComponent {
               await this.tableReference.collection(`${this.tableName}`).doc('players').collection('players').doc(`${this.playerName}`).set({
                 playerName: `${this.playerName}`,
                 isAdmin: false,
-                order: 0,
+                order: 1,
               });
 
               // send data to session storage

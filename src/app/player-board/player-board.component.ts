@@ -37,12 +37,15 @@ export class PlayerBoardComponent implements OnInit {
 
   // order players
   order(playerID) {
-      const message = prompt(`Wpisz numer gracza w kolejności (1-${this.settings[0].numOfPlayers}):`);
+      const message = prompt(`Wpisz numer gracza w kolejności (1-${this.players.map((e) => e).length}):`);
       const num = parseFloat(message);
       const ifValid = [1,2,3,4,5,6,7,8].find((el) => el === num);
+      const ifHigher = num <= this.players.map((e) => e).length;
       const ifAvailable = [...this.players].find((el) => el.order === num);
+      
+      console.warn(num)
   
-      if (ifValid && ifAvailable === undefined) {
+      if (ifHigher && ifValid && ifAvailable === undefined) {
         this.tableReference.doc('players').collection('players').doc(playerID).update({
           order: num,
         });
