@@ -4,31 +4,29 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { MatSliderModule } from '@angular/material/slider';
-import {MatInputModule} from '@angular/material/input';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 import { AppComponent } from './app.component';
 import { MainWidgetComponent } from './main-widget/main-widget.component';
 import { CreateTeamComponent } from './create-team/create-team.component';
-import { AdminBoardComponent } from './admin-board/admin-board.component';
 import { PlayerBoardComponent } from './player-board/player-board.component';
+import { CountdownComponent } from './countdown/countdown.component';
+import { TimeFormatPipe } from './time-format.pipe';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: AppComponent
-  },
-  {
-    path: ':id',
-    component: AppComponent
-  }
-];
-
-
+const config = {
+// 
+};
 
 
 @NgModule({
@@ -36,12 +34,12 @@ const routes: Routes = [
     AppComponent,
     MainWidgetComponent,
     CreateTeamComponent,
-    AdminBoardComponent,
-    PlayerBoardComponent
+    PlayerBoardComponent,
+    CountdownComponent,
+    TimeFormatPipe,
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes),
     FormsModule,
     MatSliderModule,
     MatInputModule,
@@ -50,6 +48,9 @@ const routes: Routes = [
     AngularSvgIconModule,
     AngularFireModule.initializeApp(config),
     AngularFirestoreModule,
+    BrowserAnimationsModule,
+    MatSelectModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
