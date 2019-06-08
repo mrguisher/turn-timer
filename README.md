@@ -14,7 +14,8 @@ app url: https://turn-timer.mrpeciak.now.sh/
 * [Features](#features)
 
 ## General info
-
+![mockup TURN TIMER](/mockup/scr1.png)
+![mockup TURN TIMER](/mockup/scr2.png)
 
 ## Technologies
 * Angular 7
@@ -29,4 +30,5 @@ Admin:
 * set turn duration
 
 Player:
+* stop countdown
 * save overall player time for statistical purposes (TBA)
