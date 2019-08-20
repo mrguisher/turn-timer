@@ -10,14 +10,11 @@
   [currentPage]= "currentPage"
 ></app-create-team>
 
-
 <app-player-board
   *ngIf="currentPage === 'player' "
   (toggleWidgets)="changeWidget($event)"
 >
 </app-player-board>
-
-
 
 <div *ngIf="currentPage === 'error-table-name' ">table name is occupied</div>
 <div *ngIf="currentPage === 'error-player-name' ">player name is occupied</div>
