@@ -32,7 +32,7 @@ All data is stored in Cloud Firestore. While preforming CRUD operations, app sub
 * change player order
 * set number of players
 * set turn duration
-* stop countdown
+* stop countdown  
 TBA:
 * save overall player time for statistical purposes
 * prevent screen sleep
