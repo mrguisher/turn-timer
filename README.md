@@ -26,6 +26,7 @@ All data is stored in Cloud Firestore. While preforming CRUD operations, app sub
 * Cloud Firestore (Firebase)
 * JavaScript
 * SCSS
+* BEM methodology
 
 ## Features
 * start game with random player
