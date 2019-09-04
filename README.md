@@ -2,7 +2,7 @@
 
 ## Introduction 
 
-TURN TIMER is a web application created to refine the gameplay of board games.
+TURN TIMER is a web application created to refine the board games gameplay, use Firebase as backend.
 
 app url: https://www.mateuszpeciak.pl/turn-timer
 
@@ -13,8 +13,9 @@ app url: https://www.mateuszpeciak.pl/turn-timer
 * [Features](#features)
 
 ## General info
-TURN TIMER is a web application created to refine the board games gameplay. Player after login joins virtual table board with 2-8 players. If player is active a countdown begins and when the time is up player is switched.
-App allows you to set the duration of the round for each player and follow gameplay progress. This application is designed with the mobile-first approach and is responsive to screen size.
+
+User can create a new table (as new collection in database) or join virtual table board with 2-8 players. If player is active a countdown begins, the board game turn is now underway, and when the time is up player is switched. TURN TIMER allows you to set the duration of the turn for each player and follow gameplay progress.  
+This application is designed with the mobile-first approach and is responsive to screen size.  
 All data is stored in Cloud Firestore. While preforming CRUD operations, app subscribe on changes in Firebase collection and display asynchronous data.
 
 ## Screenshots
